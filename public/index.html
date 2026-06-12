@@ -456,94 +456,222 @@ const T = {
 };
 
 // ── SCENARIOS & PAIRS ──
-const SCENARIOS_EN = [
-  {title:'The 48-Hour Preparation',body:'You have been asked to lead a significant negotiation. The stakes are high and the issues are complex. How do you spend your preparation time?',options:{A:'Focus primarily on your own side — map your interests, define your reservation point and BATNA, and form initial hypotheses about what the counterpart likely wants.',B:'Invest most time researching the counterpart — their context, constraints, and priorities — while keeping some time to clarify your own position.',C:'Focus on designing the conditions — who should be in the room, how to open the relationship, what agenda gives both sides the best chance.',D:'Rely on what you will read in the room. Over-preparing creates rigidity — you prefer to stay adaptive.'}},
-  {title:'The Information Gap',body:'You are in a negotiation. The counterpart\'s stated position doesn\'t add up — something is driving this that they haven\'t made explicit.',options:{A:'Stay focused on the substance — probe too deeply and you risk appearing intrusive or disrupting the dynamic.',B:'Ask open questions to explore what\'s behind their position — understand what\'s driving them before you respond.',C:'Test hypotheses indirectly — reframe the proposition in different ways and observe how they react.',D:'Name it openly — acknowledge you sense there may be more and invite them to share what would help find a solution.'}},
-  {title:'The Impasse',body:'A negotiation has stalled on a core issue. Both sides have stated positions. Neither has moved.',options:{A:'Hold your position and increase pressure — signal you have alternatives and the current terms are not acceptable.',B:'Introduce new issues — broaden scope deliberately to create trades across issues each side values differently.',C:'Step back and invest in the relationship — call a break, reset the tone, rebuild connection before returning.',D:'Propose several differently structured packages and ask the counterpart to react, surfacing what they value most.'}},
-  {title:'The Aggressive Anchor',body:'The counterpart opens with an offer significantly more aggressive than expected — well outside a reasonable range, presented with confidence.',options:{A:'Counter firmly with your own well-anchored position backed by a rationale you can defend — treat their anchor as an opening move.',B:'Don\'t counter immediately — probe first to understand what\'s driving their number.',C:'Name the gap explicitly and propose shifting toward interests and criteria that should govern a fair outcome.',D:'Make a measured concession from your own position to signal good faith and bring things into a workable range.'}},
-  {title:'The Creative Deadlock',body:'Both sides want to reach agreement but the deal as structured doesn\'t work — numbers don\'t close, terms don\'t align.',options:{A:'Push for a compromise — meet in the middle on the key issue. Not perfect but it moves things forward.',B:'Reframe the problem — ask what each side needs the deal to do, and find structures that satisfy those underlying needs.',C:'Introduce new variables — payment timing, risk allocation, performance conditions — to make economics work differently.',D:'Suggest both sides take time to think creatively before the next session rather than force a solution under pressure.'}},
-  {title:'The Concession Moment',body:'The counterpart has made a concession on something that matters to you. There is implicit expectation you will reciprocate.',options:{A:'Reciprocate promptly and generously — maintaining goodwill matters more than extracting maximum value from every exchange.',B:'Acknowledge their move, then make a deliberate smaller concession — link it visibly to their movement, signal continued reciprocity is required.',C:'Hold your position — their concession may reflect flexibility rather than requiring reciprocity, and conceding too quickly creates a costly pattern.',D:'Introduce a new issue or reframe the package — redirect the energy toward a creative trade rather than a direct concession.'}},
-  {title:'The Relationship Under Tension',body:'You are in a strategically important negotiation. The counterpart becomes visibly frustrated, makes a comment you find unfair. The atmosphere turns tense.',options:{A:'Stay focused on the substance — depersonalize the exchange and treat the tension as an emotional fluctuation that will pass.',B:'Acknowledge the tension directly — name that the conversation has shifted, create space for both sides to reset.',C:'Read the frustration as a signal — pause and ask what specifically isn\'t working, treating their emotional state as diagnostic information.',D:'Make a gesture — a small concession or personal acknowledgment — that lowers the temperature enough to move forward.'}},
-  {title:'The Closing Moment',body:'Agreement is within reach. The broad shape is clear, both sides have moved, remaining gaps are small. The counterpart seems ready but hasn\'t committed.',options:{A:'Close decisively — summarize agreements, propose final terms on remaining issues, ask directly for commitment.',B:'Let the counterpart move toward closure at their own pace — signal readiness but allow them to initiate so they feel ownership.',C:'Introduce a final creative element — a modest sweetener or reframing that makes the agreement feel complete and generative.',D:'Slow down — ensure both sides feel genuinely satisfied before committing, even if it means reopening a point or two.'}}
+// ── SCENARIO & PAIR DATA (reviewed by Pierre) ──
+const SCENARIO_DATA = [
+  {
+    title:'The 48-Hour Preparation',
+    situation:'You have two days before a high-stakes negotiation with a counterpart you have never dealt with. You open your laptop to prepare.',
+    pairs:[
+      {q:'What do you do first?',
+       o1:'You pull up everything you know about your position — your objectives, your limits, your walk-away point. You want to be rock-solid on your own ground before anything else.',
+       o2:'You start researching the counterpart — their recent situation, their likely interests, what a good deal probably looks like from their side.',
+       s1:[2,1,4,1],s2:[4,2,2,1]},
+      {q:'A colleague says: "Do not over prepare, you always figure it out in the room anyway." How do you respond?',
+       o1:"You agree — you've always been good at reading situations in real time. You spend the remaining prep time making sure you're mentally sharp rather than overloading yourself.",
+       o2:"You disagree. Going in without a clear picture of their interests and constraints is a risk you're not willing to take — you keep researching.",
+       s1:[0,1,2,2],s2:[4,2,2,1]},
+      {q:'You have one hour left before the negotiation. You spend it:',
+       o1:'Sharpening your opening position and rehearsing how you will respond to their likely pushback. You want to be ready for the argument.',
+       o2:'Thinking about who should be in the room, how to open the relationship, and what tone you want to set from the first minutes. The climate matters as much as the content.',
+       s1:[1,1,4,1],s2:[1,2,1,4]},
+      {q:'A peer who has dealt with this counterpart before offers to brief you. You:',
+       o1:'Take the briefing — any intelligence about their style, priorities, and sensitivities is useful and will help you adapt in the room.',
+       o2:"Thank them but decline — you prefer to form your own impression fresh, without someone else's biases shaping how you read them.",
+       s1:[3,1,1,3],s2:[0,1,2,2]}
+    ]
+  },
+  {
+    title:'The Information Gap',
+    situation:"You are in a negotiation. The counterpart is engaging, but what they are asking for doesn't quite add up — their stated position doesn't seem to reflect what they actually need.",
+    pairs:[
+      {q:'You notice the inconsistency. What do you do?',
+       o1:"You stay focused on the substance — you respond to what they've put on the table. You can only work with what's in front of you.",
+       o2:'You slow down and ask an open question — "Help me understand what's most important to you here" — before you respond to anything.',
+       s1:[0,1,4,1],s2:[4,2,1,2]},
+      {q:'You decide to probe. How do you do it?',
+       o1:'You ask directly: "What's driving this for you?" You want to hear it from them clearly.',
+       o2:'You reframe your proposal slightly and watch how they react. Their response to a different framing will tell you more than a direct question would.',
+       s1:[4,2,1,2],s2:[4,3,1,2]},
+      {q:'The gap between what they say and what they seem to need keeps growing. You:',
+       o1:"Hold your position and let them make the next move. If there's something they're not saying, the pressure of the negotiation will bring it out.",
+       o2:'Name it openly — "I sense there may be something behind your position that we haven't discussed yet. I'd rather understand your real situation than negotiate around it."',
+       s1:[0,1,4,0],s2:[3,2,0,4]},
+      {q:'You are trying to understand their real constraint. Which feels more natural?',
+       o1:'Proposing three different structures and observing which one gets the least resistance — you map their preferences through their reactions.',
+       o2:'Sharing one of your own constraints first, as a way of creating the climate for them to reciprocate.',
+       s1:[4,3,1,2],s2:[3,2,0,4]}
+    ]
+  },
+  {
+    title:'The Impasse',
+    situation:'A negotiation has been progressing but has now stalled on a core issue. Both sides have stated their positions clearly. Neither has moved. The atmosphere is still professional but the conversation has stopped.',
+    pairs:[
+      {q:'Neither side has moved in 20 minutes. What do you do?',
+       o1:'You hold your position and signal clearly that you have alternatives — this is the moment to test whether their resistance is real or a tactic.',
+       o2:'You introduce a new element — something you know matters to them — and propose a trade. Moving sideways is better than staying stuck.',
+       s1:[0,0,4,0],s2:[2,4,1,1]},
+      {q:'You feel the impasse is becoming tense. You:',
+       o1:"Propose looking at the problem differently — are there other issues you haven't explored that could create room for movement on this one?",
+       o2:"Call a short break. The tension is getting in the way of the thinking — you'd rather reset the dynamic than push through it.",
+       s1:[2,4,1,1],s2:[0,1,0,4]},
+      {q:'The counterpart looks frustrated. You interpret this as:',
+       o1:"A sign that they're close to their limit — this is the moment to maintain pressure rather than give them relief.",
+       o2:"A signal that the process isn't working — you address the emotional temperature before you can make progress on the substance.",
+       s1:[0,0,4,0],s2:[0,1,0,4]},
+      {q:'You want to break the deadlock creatively. You:',
+       o1:"Bring in a new issue you've been holding back — something of lower cost to you but higher value to them — and link it explicitly to movement on the stuck issue.",
+       o2:'Lay out three differently structured packages — each trades off the issues in a different way — and ask them which gets closest to working for them.',
+       s1:[2,4,1,1],s2:[2,4,1,2]}
+    ]
+  },
+  {
+    title:'The Aggressive Anchor',
+    situation:"You receive the counterpart's opening offer. The number is significantly more aggressive than you expected — well outside what you consider a reasonable range — and presented with confidence and a brief justification.",
+    pairs:[
+      {q:'The offer is on the table. Your first move is:',
+       o1:'Counter immediately with your own well-anchored position — you treat their opening as a tactical move and establish your reference point before anything else.',
+       o2:'Ask a question — "Help me understand what's behind this number" — before you respond. You want to know what's driving it.',
+       s1:[1,1,4,0],s2:[4,2,1,2]},
+      {q:"You have probed and their anchor seems firm. You now:",
+       o1:"Keep asking questions — there's always a reason behind a number, and you haven't found the real one yet.",
+       o2:'Name the gap explicitly and propose shifting the conversation — "Rather than arguing over positions, can we agree on what criteria should define a fair outcome for both sides?"',
+       s1:[4,2,1,2],s2:[2,3,2,2]},
+      {q:'Their anchor is extreme and they show no sign of moving. You:',
+       o1:'Hold your ground and counter firmly — an extreme anchor requires an equally firm response, not a concession.',
+       o2:'Make a small gesture toward their position — not because you agree, but to signal goodwill and move the conversation out of confrontation.',
+       s1:[1,1,4,0],s2:[1,1,0,4]},
+      {q:'You want to break the anchoring dynamic. Which approach feels more like you?',
+       o1:"Propose looking at the problem completely differently — introduce a structure that makes the original anchor irrelevant because it changes what's being negotiated.",
+       o2:"Acknowledge their position respectfully and make a modest move in their direction — enough to keep the conversation alive without signaling weakness.",
+       s1:[2,3,2,2],s2:[1,1,0,4]}
+    ]
+  },
+  {
+    title:'The Creative Deadlock',
+    situation:"Both sides want to reach agreement and the goodwill is real. But the deal as currently structured doesn't work — the numbers don't close, the terms don't align, and a straight split of the difference would leave both sides genuinely dissatisfied.",
+    pairs:[
+      {q:"The deal isn't coming together. What do you do?",
+       o1:"You propose splitting the difference — it's not ideal but it's fair, it's fast, and it gets the deal done. Sometimes good enough is good enough.",
+       o2:'You step back and ask a different question — "What does this deal actually need to do for each of us?" You'd rather rebuild the structure than patch it.',
+       s1:[0,0,3,2],s2:[4,4,1,2]},
+      {q:"You've decided not to split the difference. Your next move:",
+       o1:"Spend time mapping what each party actually values — there may be trades available that neither side has seen yet because you've been focused on one issue.",
+       o2:'Introduce new variables into the deal — payment timing, risk sharing, performance conditions, future options — to make the economics work differently.',
+       s1:[4,4,1,2],s2:[1,4,2,1]},
+      {q:'You are running out of time. The pressure to close is building. You:',
+       o1:'Propose a clean compromise — you give a bit, they give a bit, you both walk away with something. Done is better than perfect.',
+       o2:'Resist the pressure and introduce one new variable that could change the economics — even a small structural change is better than leaving value on the table.',
+       s1:[0,0,3,2],s2:[1,4,2,1]},
+      {q:"You have tried everything you can think of. The deal still doesn't work. You:",
+       o1:'Propose one more creative structure — a phased approach, an earnout, a conditional clause — before giving up on the current session.',
+       o2:'Suggest pausing and coming back with fresh thinking. Forcing a creative solution under pressure usually produces a bad one.',
+       s1:[1,4,2,1],s2:[2,2,0,3]}
+    ]
+  },
+  {
+    title:'The Concession Moment',
+    situation:"The counterpart has just made a concession on an issue that matters to you. There is an implicit expectation in the room that you will reciprocate. You have flexibility available on several issues.",
+    pairs:[
+      {q:"They've moved. What do you do?",
+       o1:"You reciprocate promptly and generously — maintaining momentum and goodwill matters more than optimizing every exchange. You want them to feel the negotiation is fair.",
+       o2:'You acknowledge their move explicitly, then make a deliberate and smaller concession — you link it to their movement and make clear that further progress depends on continued reciprocity.',
+       s1:[0,1,0,4],s2:[1,2,4,2]},
+      {q:'How do you think about concessions in general?',
+       o1:'Each concession should be smaller than the last and explicitly linked to what the other side gives — concession patterns send a message, and yours should say "I'm approaching my limit."',
+       o2:"You concede as little as possible for as long as possible — every concession is a loss, and the best outcome is one where you've given away the minimum.",
+       s1:[1,2,4,2],s2:[1,0,4,0]},
+      {q:'The counterpart has conceded twice and is visibly waiting for you to match. You:',
+       o1:"Give them something meaningful — the relationship matters, and a negotiation where one side feels they've given everything is a fragile foundation for what comes next.",
+       o2:"Hold your position — their concessions are their choice, not an obligation on your part. You'll move when it makes strategic sense, not in response to social pressure.",
+       s1:[0,1,0,4],s2:[1,0,4,0]},
+      {q:'You want to respond to their concession without simply giving something away. You:',
+       o1:'Make a calibrated concession on a lower-priority issue — you keep the exchange going while protecting what matters most to you.',
+       o2:'Introduce a new element rather than conceding — a creative trade or a reframing that gives them something of value without reducing your position.',
+       s1:[1,2,4,2],s2:[2,4,2,1]}
+    ]
+  },
+  {
+    title:'The Relationship Under Tension',
+    situation:"You are in a negotiation that matters strategically — the relationship has long-term value beyond this deal. Midway through, the tone shifts. The counterpart becomes visibly frustrated, makes a comment you find unfair, and the atmosphere turns tense. The issues are still unresolved.",
+    pairs:[
+      {q:'The atmosphere has shifted. What do you do first?',
+       o1:"You redirect the conversation toward the issues — you keep your tone professional and treat the tension as something that will pass if you don't engage with it directly.",
+       o2:'You name what's happening — "I sense the conversation has shifted and I'd like to address that before we continue." You create space to reset.',
+       s1:[1,1,3,0],s2:[1,1,0,4]},
+      {q:"You've acknowledged the tension. Now what?",
+       o1:"You invest time in rebuilding the relational climate — rapport first, substance second. You'd rather lose time than lose the relationship.",
+       o2:"You ask what's specifically not working for them — you treat their emotional state as diagnostic information about something substantive, not just an atmosphere problem.",
+       s1:[1,1,0,4],s2:[4,2,1,3]},
+      {q:"The counterpart's frustration seems to be about something beyond the specific issue. You:",
+       o1:"Stay focused on the content — emotions are a distraction and the best way to reduce tension is to make progress on the substance.",
+       o2:'Ask a broader question — "I want to make sure this negotiation works for you. Is there something about how we're approaching this that isn't sitting right?"',
+       s1:[1,1,3,0],s2:[4,2,1,3]},
+      {q:'The tension is real and affecting the negotiation. Which feels more like your instinct?',
+       o1:"Understand what's driving the frustration before you do anything else — acting without understanding the root cause risks making it worse.",
+       o2:"Make a gesture that lowers the temperature — a small concession, an acknowledgment, something that signals you want this to work. Restoring the climate is worth a little cost.",
+       s1:[4,2,1,3],s2:[0,1,0,4]}
+    ]
+  },
+  {
+    title:'The Closing Moment',
+    situation:"The negotiation has reached a point where agreement is within reach. Both sides have moved, remaining gaps are small, and the counterpart seems ready — but they haven't explicitly committed.",
+    pairs:[
+      {q:'The moment feels right. What do you do?',
+       o1:'You close decisively — you summarize what has been agreed, propose clear final terms, and ask directly for a commitment. The moment is there and hesitating risks losing it.',
+       o2:"You signal your readiness but let them initiate the final step — they'll be more committed to an agreement they feel they've chosen rather than one they were pushed into.",
+       s1:[1,1,4,2],s2:[1,2,1,4]},
+      {q:'You want to make the close feel complete. You:',
+       o1:"Ask for a clear commitment on the remaining terms — you've done the work, now it's time to close. Clean and direct.",
+       o2:'Add a small creative element at the close — a modest sweetener, a reframing, something that makes the agreement feel generous rather than just acceptable.',
+       s1:[1,1,4,2],s2:[1,4,2,2]},
+      {q:'The counterpart seems almost there but slightly hesitant. You:',
+       o1:"Give them space and let them come to it — you stay present and available but don't push. Ownership matters more than speed.",
+       o2:'Slow down deliberately and check in — "Before we finalize, I want to make sure this works for you." You'd rather surface a concern now than have it surface later.',
+       s1:[1,2,1,4],s2:[2,2,0,4]},
+      {q:'You can close now or take more time. You:',
+       o1:'Close now — the window is open, both sides are ready, and waiting risks letting doubt creep in. A deal closed is a deal closed.',
+       o2:'Take a little more time — ensuring both sides genuinely feel good about the outcome is worth more than a fast signature that either side regrets.',
+       s1:[1,1,4,2],s2:[2,2,0,4]}
+    ]
+  }
 ];
 
-const SCENARIOS_FR = [
-  {title:'La Préparation',body:'Vous devez mener une négociation importante. Les enjeux sont élevés. Comment occupez-vous votre temps de préparation ?',options:{A:'Concentrez-vous sur votre propre côté — cartographier vos intérêts, définir votre point de réserve et BATNA, et former des hypothèses sur ce que la contrepartie veut.',B:'Investissez la plupart du temps à rechercher la contrepartie — son contexte, ses contraintes et ses priorités.',C:'Concentrez-vous sur la conception des conditions — qui doit être dans la salle, comment ouvrir la relation.',D:'Comptez sur ce que vous lirez dans la salle. Trop se préparer crée de la rigidité.'}},
-  {title:'Le Manque d\'Information',body:'Vous êtes dans une négociation. La position déclarée de la contrepartie ne cadre pas totalement.',options:{A:'Restez concentré sur la substance — sonder trop risque d\'apparaître intrusif.',B:'Posez des questions ouvertes pour explorer ce qui se cache derrière leur position.',C:'Testez vos hypothèses indirectement — reformulez la proposition de différentes façons.',D:'Nommez-le ouvertement — reconnaissez que vous sentez qu\'il y a peut-être plus et invitez-les à partager.'}},
-  {title:'L\'Impasse',body:'Une négociation a bloqué sur un problème central. Aucune des deux parties n\'a bougé.',options:{A:'Maintenez votre position et augmentez la pression — signalez que vous avez des alternatives.',B:'Introduisez de nouveaux problèmes — élargissez la portée pour créer des échanges.',C:'Prenez du recul et investissez dans la relation — faites une pause, réinitialisez le ton.',D:'Proposez plusieurs packages structurés différemment et demandez à la contrepartie de réagir.'}},
-  {title:'L\'Ancre Agressive',body:'La contrepartie ouvre avec une offre bien plus agressive que prévu, présentée avec confiance.',options:{A:'Contre-proposez fermement avec votre propre position ancrée soutenue par une justification.',B:'Ne contre-proposez pas immédiatement — sondez d\'abord pour comprendre ce qui motive leur chiffre.',C:'Nommez l\'écart et proposez de déplacer vers les intérêts et critères qui devraient gouverner un résultat équitable.',D:'Faites une concession mesurée pour signaler la bonne foi.'}},
-  {title:'L\'Impasse Créative',body:'Les deux parties veulent un accord mais le deal tel que structuré ne fonctionne pas.',options:{A:'Poussez pour un compromis — rencontrez-vous au milieu sur la question principale.',B:'Recadrez le problème — demandez ce dont chaque partie a besoin et trouvez des structures qui satisfont ces besoins.',C:'Introduisez de nouvelles variables — délais de paiement, allocation des risques, conditions de performance.',D:'Suggérez que les deux parties prennent le temps de réfléchir avant la prochaine session.'}},
-  {title:'Le Moment de Concession',body:'La contrepartie a fait une concession sur quelque chose qui vous importe. Il y a une attente implicite de réciprocité.',options:{A:'Réciproquéz promptement et généreusement — maintenir la bonne volonté compte plus que d\'extraire la valeur maximale.',B:'Reconnaissez leur mouvement, puis faites une concession plus petite liée à leur mouvement.',C:'Maintenez votre position — leur concession peut refléter une flexibilité réelle.',D:'Introduisez un nouveau problème ou recadrez le package — redirigez l\'énergie vers un échange créatif.'}},
-  {title:'La Relation Sous Tension',body:'La contrepartie devient visiblement frustrée. L\'atmosphère se tend.',options:{A:'Restez concentré sur la substance et dépersonnalisez l\'échange.',B:'Reconnaissez la tension directement — nommez que la conversation a changé.',C:'Lisez la frustration comme un signal — demandez ce qui ne fonctionne pas spécifiquement pour eux.',D:'Faites un geste — une petite concession ou reconnaissance personnelle — pour baisser la température.'}},
-  {title:'Le Moment de Clôture',body:'L\'accord est à portée. La forme générale est claire. La contrepartie semble prête mais n\'a pas encore confirmé.',options:{A:'Clôturez de manière décisive — résumez les accords et demandez directement un engagement.',B:'Laissez la contrepartie évoluer vers la clôture à son propre rythme.',C:'Introduisez un élément créatif final — un avantage modeste ou un recadrage.',D:'Ralentissez — assurez-vous que les deux parties se sentent genuinement satisfaites avant de s\'engager.'}}
+// French: placeholder until Pierre provides translation
+const SCENARIO_DATA_FR = null;
+
+// Pressure scenario indices and best integrative option index (0=o1, 1=o2)
+const PRESSURE_PAIRS = [
+  {si:2,pi:0,best:1},{si:3,pi:0,best:1},{si:5,pi:0,best:1},{si:6,pi:3,best:0}
 ];
-
-// 32 PAIRS — 4 per scenario
-// Format: [scenarioIdx, optA, optB]
-const PAIRS = [
-  // S1 Preparation
-  [0,'A','B'],[0,'B','D'],[0,'A','C'],[0,'C','D'],
-  // S2 Information Gap
-  [1,'A','B'],[1,'B','C'],[1,'A','D'],[1,'C','D'],
-  // S3 Impasse
-  [2,'A','B'],[2,'B','C'],[2,'A','C'],[2,'B','D'],
-  // S4 Aggressive Anchor
-  [3,'A','B'],[3,'B','C'],[3,'A','D'],[3,'C','D'],
-  // S5 Creative Deadlock
-  [4,'A','B'],[4,'B','C'],[4,'A','C'],[4,'C','D'],
-  // S6 Concession Moment
-  [5,'A','B'],[5,'B','C'],[5,'A','C'],[5,'B','D'],
-  // S7 Tension
-  [6,'A','B'],[6,'B','C'],[6,'A','C'],[6,'C','D'],
-  // S8 Closing
-  [7,'A','B'],[7,'A','C'],[7,'B','D'],[7,'A','D']
-];
-
-// SCORING: points per option per axis [VD, VC, VCap, SV]
-const SCORES = {
-  0:{A:[2,1,4,1],B:[4,2,2,1],C:[1,2,1,4],D:[0,1,2,2]},
-  1:{A:[0,1,4,1],B:[4,2,1,2],C:[4,3,1,2],D:[3,2,0,4]},
-  2:{A:[0,0,4,0],B:[2,4,1,1],C:[0,1,0,4],D:[2,4,1,2]},
-  3:{A:[1,1,4,0],B:[4,2,1,2],C:[2,3,2,2],D:[1,1,0,4]},
-  4:{A:[0,0,3,2],B:[4,4,1,2],C:[1,4,2,1],D:[2,2,0,3]},
-  5:{A:[0,1,0,4],B:[1,2,4,2],C:[1,0,4,0],D:[2,4,2,1]},
-  6:{A:[1,1,3,0],B:[1,1,0,4],C:[4,2,1,3],D:[0,1,0,4]},
-  7:{A:[1,1,4,2],B:[1,2,1,4],C:[1,4,2,2],D:[2,2,0,4]}
-};
-
-const PRESSURE = [2,3,5,6];
-const BEST_INTEGRATIVE = {2:'B',3:'B',5:'B',6:'D'};
 
 function computeScores(results){
-  // Win counts per option per scenario
-  const wins={};
-  for(let si=0;si<8;si++) wins[si]={A:0,B:0,C:0,D:0};
-  results.forEach(r=>{wins[r.scenario][r.winner]+=2;wins[r.scenario][r.loser]+=0;});
-
+  // results: [{si, pi, winner}] where winner is 1 or 2
   let vd=0,vc=0,vcap=0,sv=0,maxVD=0,maxVC=0,maxVCap=0,maxSV=0;
   let pressureBreaks=0;
+  const total=results.length||1;
 
-  for(let si=0;si<8;si++){
-    const w=wins[si];
-    const total=w.A+w.B+w.C+w.D||1;
-    ['A','B','C','D'].forEach(opt=>{
-      const s=SCORES[si][opt];
-      const weight=w[opt]/total;
-      vd+=s[0]*weight;vc+=s[1]*weight;vcap+=s[2]*weight;sv+=s[3]*weight;
-    });
-    // Max possible
-    const maxS=SCORES[si];
-    const mx=Object.values(maxS).reduce((acc,s)=>[acc[0]+s[0],acc[1]+s[1],acc[2]+s[2],acc[3]+s[3]],[0,0,0,0]);
-    maxVD+=mx[0]/4;maxVC+=mx[1]/4;maxVCap+=mx[2]/4;maxSV+=mx[3]/4;
+  results.forEach(r=>{
+    const scen=SCENARIO_DATA[r.si];
+    const pair=scen.pairs[r.pi];
+    const ws=r.winner===1?pair.s1:pair.s2;
+    const ls=r.winner===1?pair.s2:pair.s1;
+    // Winner gets full points, loser gets half
+    vd+=ws[0]+ls[0]*0.5; vc+=ws[1]+ls[1]*0.5;
+    vcap+=ws[2]+ls[2]*0.5; sv+=ws[3]+ls[3]*0.5;
+    // Max possible per pair = sum of max of each axis
+    maxVD+=Math.max(pair.s1[0],pair.s2[0])*1.5;
+    maxVC+=Math.max(pair.s1[1],pair.s2[1])*1.5;
+    maxVCap+=Math.max(pair.s1[2],pair.s2[2])*1.5;
+    maxSV+=Math.max(pair.s1[3],pair.s2[3])*1.5;
+  });
 
-    // Pressure check
-    if(PRESSURE.includes(si)){
-      const best=BEST_INTEGRATIVE[si];
-      if(w[best]===0)pressureBreaks++;
-    }
-  }
+  // Pressure check
+  PRESSURE_PAIRS.forEach(pp=>{
+    const r=results.find(x=>x.si===pp.si&&x.pi===pp.pi);
+    if(r&&r.winner!==(pp.best+1))pressureBreaks++;
+  });
 
-  const toS=(r,m)=>Math.min(100,Math.max(0,Math.round((r/m)*100)));
+  const toS=(r,m)=>m>0?Math.min(100,Math.max(0,Math.round((r/m)*100))):50;
   const vdS=toS(vd,maxVD),vcS=toS(vc,maxVC),vcapS=toS(vcap,maxVCap),svS=toS(sv,maxSV);
 
   let profile='The Improviser';
@@ -608,61 +736,60 @@ async function startSession(){
 }
 
 // ── PAIRED COMPARISON ──
+// Flat list of all 32 pairs: {si, pi} (scenario index, pair index within scenario)
+const ALL_PAIRS = SCENARIO_DATA.flatMap((scen,si)=>scen.pairs.map((_,pi)=>({si,pi})));
+
 function showPairs(){S.pairIdx=0;S.pairResults=[];showScreen('sPairs');renderPair();}
 
 function renderPair(){
-  const total=PAIRS.length;
+  const total=ALL_PAIRS.length;
   const pct=(S.pairIdx/total)*100;
   document.getElementById('ppFill').style.width=pct+'%';
 
-  const [si,optA,optB]=PAIRS[S.pairIdx];
-  const scenarios=S.lang==='fr'?SCENARIOS_FR:SCENARIOS_EN;
-  const scen=scenarios[si];
+  const {si,pi}=ALL_PAIRS[S.pairIdx];
+  const data=(S.lang==='fr'&&SCENARIO_DATA_FR)?SCENARIO_DATA_FR:SCENARIO_DATA;
+  const scen=data[si];
+  const pair=scen.pairs[pi];
 
-  // Scenario context
-  const prevSi=S.pairIdx>0?PAIRS[S.pairIdx-1][0]:-1;
+  // Show scenario context only on first pair of each scenario
+  const prevSi=S.pairIdx>0?ALL_PAIRS[S.pairIdx-1].si:-1;
   if(si!==prevSi||S.pairIdx===0){
     document.getElementById('psNum').textContent=`${t('scenario')} ${si+1} ${t('of')} 8`;
     document.getElementById('psTitle').textContent=scen.title;
-    document.getElementById('psBody').textContent=scen.body;
+    document.getElementById('psBody').textContent=scen.situation;
     document.getElementById('pairScenario').style.display='';
   } else {
     document.getElementById('pairScenario').style.display='none';
   }
 
-  // Count pair within scenario
-  const pairsInScen=PAIRS.filter(p=>p[0]===si);
-  const pairNum=pairsInScen.findIndex((p,_)=>PAIRS.indexOf(p)===S.pairIdx)+1;
   document.getElementById('ppLabel').textContent=`${t('pair')} ${S.pairIdx+1} ${t('of')} ${total}`;
-  document.getElementById('ppScenLabel').textContent=`${t('scenario')} ${si+1} · ${t('pair')} ${pairNum} ${t('of')} 4`;
-  document.getElementById('pairQ').textContent=T[S.lang].pairQ;
+  document.getElementById('ppScenLabel').textContent=`${t('scenario')} ${si+1} · ${t('pair')} ${pi+1} ${t('of')} 4`;
+  document.getElementById('pairQ').textContent=pair.q;
 
   const cards=document.getElementById('pairCards');
   cards.innerHTML='';
-  [optA,optB].forEach(opt=>{
+  [{text:pair.o1,winner:1},{text:pair.o2,winner:2}].forEach(opt=>{
     const card=document.createElement('div');
     card.className='pair-card';
-    card.innerHTML=`<div style="display:flex;align-items:center;gap:8px"><div class="pc-letter">${opt}</div></div><div class="pc-text">${scen.options[opt]}</div>`;
-    card.onclick=()=>selectPair(si,opt,opt===optA?optB:optA);
+    card.innerHTML=`<div class="pc-text">${opt.text}</div>`;
+    card.onclick=()=>selectPair(si,pi,opt.winner,opt.winner===1?2:1);
     cards.appendChild(card);
   });
 }
 
-function selectPair(scenarioIdx,winner,loser){
-  // Visual feedback
+function selectPair(si,pi,winner,loser){
   const cards=document.querySelectorAll('.pair-card');
-  cards.forEach(c=>{
-    const letter=c.querySelector('.pc-letter').textContent;
-    if(letter===winner)c.classList.add('selected');
+  cards.forEach((c,i)=>{
+    if(i+1===winner)c.classList.add('selected');
     else c.classList.add('unselected');
     c.classList.add('disabled');
   });
 
-  S.pairResults.push({scenario:scenarioIdx,winner,loser});
+  S.pairResults.push({si,pi,winner});
 
   setTimeout(()=>{
     S.pairIdx++;
-    if(S.pairIdx>=PAIRS.length){
+    if(S.pairIdx>=ALL_PAIRS.length){
       S.scenarioScores=computeScores(S.pairResults);
       fetch('/api/scores/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionId:S.sessionId,scores:S.scenarioScores})});
       startChat();
